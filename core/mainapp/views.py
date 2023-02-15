@@ -27,18 +27,17 @@ class ProductListView(ListView):
 class ProductCreateView(CreateView):
     model = Product
     form_class = ProductForm
-    template_name = 'product_form.html'
     success_url = reverse_lazy('shop:product_list')
 
 
 class ProductDetailView(DetailView):
     model = Product
-    template_name = 'product_detail.html'
+    context_object_name = 'product'
 
 
 class ProductUpdateView(UpdateView):
     model = Product
-    template_name = 'product_form.html'
+    template_name = 'mainapp/product_update.html'
     fields = ['name', 'description', 'price', 'category']
     success_url = reverse_lazy('shop:product_list')
 

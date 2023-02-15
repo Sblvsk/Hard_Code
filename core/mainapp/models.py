@@ -26,27 +26,15 @@ class ProductAttribute(models.Model):
         return f'{self.name} - {self.data_type}'
 
 
-class ProductManager(models.Manager):
-    def get_queryset(self):
-        return super().get_queryset().filter(deleted=False)
-
-
 class Product(models.Model):
-    objects = ProductManager
-
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
     price = models.PositiveIntegerField()
     category = models.ForeignKey(ProductCategory, on_delete=models.CASCADE)
-    avatar = models.ImageField(upload_to=products_avatars_path, blank=True, null=True)
+    avatar = models.ImageField(upload_to=products_avatars_path)
     attributes = models.ManyToManyField(ProductAttribute, blank=True)
-    deleted = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
 
-    deleted = models.BooleanField(default=False)
 
-    def delete(self, *args):
-        self.deleted = True
-        self.save()

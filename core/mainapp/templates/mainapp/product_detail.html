@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ product.name }}
+{% endblock %}
+
+{% block content %}
+    <img src="{{ product.avatar.url }}" alt="{{ product.name }}" width="20%">
+    <h1>{{ product.name }}</h1>
+    <p><strong>Категория:</strong> {{ product.category.name }}</p>
+    <p><strong>Цена:</strong> {{ product.price }}</p>
+
+    {% if product.attributes.all %}
+        <p><strong>Атрибуты:</strong></p>
+        {% for attribute in product.attributes.all %}
+            {{ attribute }}
+            </p>
+        {% endfor %}
+    {% endif %}
+    <p>{{ product.description }}</p>
+    <a href="{% url 'shop:product_update' product.id %}" class="btn btn-warning">Редактировать</a>
+{% endblock %}
