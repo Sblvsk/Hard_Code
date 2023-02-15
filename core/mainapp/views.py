@@ -1,4 +1,4 @@
-from django.views.generic import ListView, CreateView, UpdateView, DetailView
+from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView
 from django.urls import reverse_lazy
 
 from .forms import ProductForm, ProductCategoryForm
@@ -10,11 +10,17 @@ class ProductListView(ListView):
     template_name = 'product_list.html'
     context_object_name = 'products'
 
+    def get_context_data(self, pk=None, **kwargs):
+        context = super(ProductListView, self).get_context_data(**kwargs)
+        context["categories"] = ProductCategory.objects.all()
+
+        return context
+
     def get_queryset(self):
         queryset = super().get_queryset()
         category = self.request.GET.get('category')
         if category:
-            queryset = queryset.filter(category__name=category)
+            queryset = Product.objects.filter(category=category)
         return queryset
 
 
@@ -47,6 +53,12 @@ class CategoryCreateView(CreateView):
     model = ProductCategory
     form_class = ProductCategoryForm
     template_name = 'category_form.html'
+    success_url = reverse_lazy('shop:category_list')
+
+
+class CategoryDeleteView(DeleteView):
+    model = ProductCategory
+    template_name = 'category_confirm_delete.html'
     success_url = reverse_lazy('shop:category_list')
 
 

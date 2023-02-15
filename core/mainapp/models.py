@@ -6,7 +6,7 @@ from time import time
 def products_avatars_path(instance, filename):
     num = int(time() * 1000)
     suff = Path(filename).suffix
-    return f"product_{instance.product}/avatars/{f'pic_{num}{suff}'}"
+    return "product_{0}/avatars/{1}".format(instance.name, f"pic_{num}{suff}")
 
 
 class ProductCategory(models.Model):
