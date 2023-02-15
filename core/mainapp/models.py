@@ -21,7 +21,6 @@ class ProductAttribute(models.Model):
     name = models.CharField(max_length=100)
     category = models.ForeignKey(ProductCategory, on_delete=models.CASCADE)
     data_type = models.CharField(max_length=100)
-
     def __str__(self):
         return f'{self.name} - {self.data_type}'
 
