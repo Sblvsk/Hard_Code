@@ -12,7 +12,6 @@ def products_avatars_path(instance, filename):
 class ProductCategory(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
-    delete = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
@@ -24,16 +23,30 @@ class ProductAttribute(models.Model):
     data_type = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.name
+        return f'{self.name} - {self.data_type}'
+
+
+class ProductManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(deleted=False)
 
 
 class Product(models.Model):
+    objects = ProductManager
+
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
     price = models.PositiveIntegerField()
     category = models.ForeignKey(ProductCategory, on_delete=models.CASCADE)
     avatar = models.ImageField(upload_to=products_avatars_path, blank=True, null=True)
-    attributes = models.ManyToManyField(ProductAttribute, blank=True, null=True)
+    attributes = models.ManyToManyField(ProductAttribute, blank=True)
+    deleted = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
+
+    deleted = models.BooleanField(default=False)
+
+    def delete(self, *args):
+        self.deleted = True
+        self.save()
