@@ -3,31 +3,18 @@ from mainapp.models import ProductCategory, ProductAttribute, Product
 from .serializers import ProductCategorySerializer, ProductAttributeSerializer, ProductSerializer
 
 
-class ProductCategoryListCreateView(generics.ListCreateAPIView):
-    queryset = ProductCategory.objects.all()
-    serializer_class = ProductCategorySerializer
-
-
-class ProductCategoryDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = ProductCategory.objects.all()
-    serializer_class = ProductCategorySerializer
-
-
-class ProductAttributeListCreateView(generics.ListCreateAPIView):
-    queryset = ProductAttribute.objects.all()
-    serializer_class = ProductAttributeSerializer
-
-
-class ProductAttributeDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = ProductAttribute.objects.all()
-    serializer_class = ProductAttributeSerializer
-
-
-class ProductListCreateView(generics.ListCreateAPIView):
+class ProductListAPIView(generics.ListAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
 
-class ProductDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Product.objects.all()
-    serializer_class = ProductSerializer
+class ProductCategoryListAPIView(generics.ListAPIView):
+    queryset = ProductCategory.objects.all()
+    serializer_class = ProductCategorySerializer
+
+
+class ProductAttributeListAPIView(generics.ListAPIView):
+    queryset = ProductAttribute.objects.all()
+    serializer_class = ProductAttributeSerializer
+
+
