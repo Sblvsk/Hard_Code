@@ -1,8 +1,8 @@
-from django.views.generic import ListView, CreateView, UpdateView, DetailView, FormView
+from django.views.generic import ListView, CreateView, UpdateView, DetailView
 from django.urls import reverse_lazy
 
-from .forms import ProductForm, ProductCategoryForm
-from .models import Product, ProductCategory
+from .forms import ProductForm
+from .models import Product, ProductCategory, ProductAttribute
 
 
 class ProductListView(ListView):
@@ -13,14 +13,20 @@ class ProductListView(ListView):
     def get_context_data(self, pk=None, **kwargs):
         context = super(ProductListView, self).get_context_data(**kwargs)
         context["categories"] = ProductCategory.objects.all()
+        context["attributes"] = ProductAttribute.objects.all()
 
         return context
 
     def get_queryset(self):
         queryset = super().get_queryset()
         category = self.request.GET.get('category')
-        if category:
+        attributes = self.request.GET.get('attributes')
+        if category and attributes:
+            queryset = Product.objects.filter(category=category, attributes=attributes)
+        elif category:
             queryset = Product.objects.filter(category=category)
+        elif attributes:
+            queryset = Product.objects.filter(attributes=attributes)
         return queryset
 
 
