@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Удаление атрибута
+{% endblock %}
+
+{% block content %}
+  <h1>Удаление атрибута</h1>
+  <p>Вы действительно хотите удалить "{{ attribute.name }}" атрибут?</p>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit">Delete</button>
+  </form>
+{% endblock %}
